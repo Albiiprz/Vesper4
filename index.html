@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Carta para Lexis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      background: url('https://i.imgur.com/ggXm9IE.jpeg') no-repeat top center;
+      background-size: cover;
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.8rem;
+      line-height: 1.8;
+      color: #2d160a;
+      overflow-x: hidden;
+    }
+
+    .bienvenida {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 10;
+    }
+
+    .bienvenida input, .bienvenida button {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.8rem;
+      padding: 10px 20px;
+      margin-top: 15px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    .bienvenida input {
+      background: #fff;
+      color: #2d160a;
+    }
+
+    .bienvenida button {
+      background: #f3e3c3;
+      color: #2d160a;
+      cursor: pointer;
+    }
+
+    .texto {
+      max-width: 800px;
+      padding: 80px 60px;
+      margin: 0 auto;
+      white-space: pre-wrap;
+      display: none;
+    }
+
+    .texto span {
+      opacity: 0;
+      animation: aparecer 3.24s forwards;
+      text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.25);
+    }
+
+    @keyframes aparecer {
+      to {
+        opacity: 1;
+      }
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Pantalla con contraseña -->
+  <div class="bienvenida" id="pantallaInicio">
+    <h1>Introduce la contraseña para leer la carta</h1>
+    <input type="password" id="clave" placeholder="Contraseña...">
+    <button onclick="validarAcceso()">Aceptar</button>
+  </div>
+
+  <!-- Reproductor de audio oculto -->
+  <audio id="musica" src="musica-lexis.mp3" preload="auto" loop></audio>
+
+  <!-- Carta -->
+  <div class="texto" id="texto"></div>
+
+  <script>
+    const contenido = `Lexis,
+
+No hemos podido hablar mucho, y es una pena. Me habría gustado conocerte un poco más.
+
+Solo quería decirte que espero que todo lo que llevas encima, especialmente lo de las maldiciones, se solucione pronto.
+
+Y por favor, no culpéis a nadie de lo que ha pasado.
+
+Todo lo que ha sucedido ha sido decisión mía. Nadie más tiene que cargar con eso.
+
+Quiero que sigáis viviendo tal y como habéis hecho hasta ahora.
+
+Seguid peleando por lo que creéis, haciendo el caos necesario cuando toque.
+
+No os paréis nunca.
+
+Yo me quedo tranquila sabiendo que el mundo sigue girando con vosotros dentro.
+
+—Vesper`;
+
+    function validarAcceso() {
+      const clave = document.getElementById("clave").value.trim().toLowerCase();
+      if (clave === "maldito") {
+        iniciarCarta();
+      } else {
+        alert("Contraseña incorrecta. Intenta otra vez.");
+      }
+    }
+
+    function iniciarCarta() {
+      document.getElementById('pantallaInicio').style.display = 'none';
+      const texto = document.getElementById("texto");
+      texto.style.display = "block";
+
+      [...contenido].forEach((letra, i) => {
+        const span = document.createElement("span");
+        span.textContent = letra;
+        span.style.animationDelay = `${i * 0.11}s`;
+        texto.appendChild(span);
+      });
+
+      const musica = document.getElementById("musica");
+      musica.volume = 1;
+      musica.play().catch(e => console.log("Autoplay bloqueado:", e));
+    }
+  </script>
+
+</body>
+</html>
